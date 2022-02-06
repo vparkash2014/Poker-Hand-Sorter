@@ -88,7 +88,7 @@ def is_there_flush(hand: object) -> int:
     if not suit:
         return 0
 
-    score = MinComboScore.Flush
+    score = MinComboScore.Flush + max(hand.get_values())
     return score
 
 
@@ -165,3 +165,4 @@ def is_there_royal_flush(hand: object) -> int:
         return score
 
     return 0
+

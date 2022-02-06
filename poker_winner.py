@@ -1,12 +1,55 @@
+from poker_constaints import HAND_DELIM, NUM_CARDS_IN_HAND
 from poker_exceptions import IncorrectNumberOfCardsError
 from poker_structure import Hand
-from poker_constaints import HAND_DELIM, NUM_CARDS_IN_HAND
+from poker_util import (
+    is_there_royal_flush,
+    is_there_straight_flush,
+    is_there_four_of_a_kind,
+    is_there_full_house,
+    is_there_flush,
+    is_there_straight,
+    is_there_three_of_a_kind,
+    is_there_two_pair,
+    is_there_pair,
+    high_card,
+)
 
 
-def highestScore(hand_obj) -> int:
+def highest_score(hand_obj) -> int:
     """
     Calculates the highest score for that hand.
     """
+    score = is_there_royal_flush(hand_obj)
+    if score:
+        return score
+    score = is_there_straight_flush(hand_obj)
+    if score:
+        return score
+    score = is_there_four_of_a_kind(hand_obj)
+    if score:
+        return score
+    score = is_there_full_house(hand_obj)
+    if score:
+        return score
+    score = is_there_flush(hand_obj)
+
+    if score:
+        return score
+    score = is_there_straight(hand_obj)
+    if score:
+        return score
+    score = is_there_three_of_a_kind(hand_obj)
+    if score:
+        return score
+    score = is_there_two_pair(hand_obj)
+    if score:
+        return score
+    score = is_there_pair(hand_obj)
+    if score:
+        return score
+    score = high_card(hand_obj)
+    if score:
+        return score
 
 
 def main():
