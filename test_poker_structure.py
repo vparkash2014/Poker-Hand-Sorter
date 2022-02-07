@@ -1,6 +1,6 @@
 import unittest
 
-from poker_structure import Hand, Card, Suits, CardValue
+from poker_structure import Hand, Card, Suits, CardValue, GameScore
 from poker_constaints import HAND_DELIM, NUM_CARDS_IN_HAND
 
 
@@ -50,13 +50,10 @@ class Test(unittest.TestCase):
         # hand_string = "9S 4D TD 8S AH"
         values = self.hand.get_values()
         self.assertEqual(len(values), NUM_CARDS_IN_HAND)
-        expected_values = [
-            CardValue.Nine,
-            CardValue.Four,
-            CardValue.T,
-            CardValue.Eight,
-            CardValue.A,
-        ]
+        expected_values = sorted(
+            [CardValue.Nine, CardValue.Four, CardValue.T, CardValue.Eight, CardValue.A],
+            reverse=True,
+        )
         self.assertEqual(values, expected_values)
 
     def test_hand_suits(self):
@@ -71,6 +68,18 @@ class Test(unittest.TestCase):
             Suits.H,
         ]
         self.assertEqual(values, expected_values)
+
+    def test_game_score(self):
+        game_score = GameScore()
+        self.assertEqual(game_score.player_1, 0)
+        game_score.give_player_1_pt()
+        self.assertEqual(game_score.player_1, 1)
+        game_score.give_player_2_pt()
+        self.assertEqual(game_score.player_2, 1)
+        game_score.give_player_1_pt()
+        game_score.give_player_1_pt()
+        game_score.give_player_1_pt()
+        self.assertEqual(game_score.player_1, 4)
 
 
 if __name__ == "__main__":

@@ -49,7 +49,7 @@ class Card:
         self.value = self.get_value(face_value)
 
     def __repr__(self):
-        return f"<Test suit:{self.suit} value:{self.value}>"
+        return f"<Suit:{self.suit}, Value:{self.value}>"
 
     def get_value(self, face_value):
         try:
@@ -76,19 +76,34 @@ class Hand:
             self.cards.append(Card(suit_value, face_value))
 
     def __repr__(self):
-        return f"<Test suit:{self.cards}"
+        return f"<The cards are:{self.cards}>"
 
     def get_values(self) -> list:
-        values = []
-        for card in self.cards:
-            values.append(card.value)
-        return values
+        values = [card.value for card in self.cards]
+        return sorted(values, reverse=True)
 
     def get_suits(self) -> list:
-        suits = []
-        for card in self.cards:
-            suits.append(card.suit)
+        suits = [card.suit for card in self.cards]
         return suits
+
+    def delete_card(self, card_value):
+        self.cards = [card for card in self.cards if card.value != card_value]
+
+
+class GameScore:
+    # TODO: in the future I would like edit this so that more than 2 players can play
+    def __init__(self):
+        self.player_1 = 0
+        self.player_2 = 0
+
+    def __repr__(self):
+        return f"<Player 1 score:{self.player_1}, Player 2 score:{self.player_2}>"
+
+    def give_player_1_pt(self):
+        self.player_1 += 1
+
+    def give_player_2_pt(self):
+        self.player_2 += 1
 
 
 # hand_1.cards[0].suit
