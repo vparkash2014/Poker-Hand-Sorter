@@ -2,7 +2,6 @@ import math
 import sys
 
 from poker_constaints import COMBO_POINT_INTERVAL, HAND_DELIM, NUM_CARDS_IN_HAND
-from poker_exceptions import IncorrectNumberOfCardsError
 from poker_structure import Hand, GameScore, MinComboScore
 from poker_util import (
     is_there_royal_flush,
@@ -18,7 +17,7 @@ from poker_util import (
 )
 
 
-def highest_hand_score(hand_obj):
+def highest_hand_score(hand_obj: object):
     """
     Calculates the highest score for that hand.
     """
@@ -66,6 +65,9 @@ def highest_hand_score(hand_obj):
 def highest_score_for_showdown(
     player_1_hand: object, player_2_hand: object, game_score: object
 ) -> object:
+    """
+    Determines which player won that showdown/ round.
+    """
     player_1_score = highest_hand_score(player_1_hand)
     player_2_score = highest_hand_score(player_2_hand)
 
@@ -82,12 +84,16 @@ def highest_score_for_showdown(
 
 
 def tie_breaker(player_1_hand: object, player_2_hand: object, game_score):
+    """
+    Determines which player won that showdown/ round via a tie breaker
+    """
     player_1_score = highest_hand_score(player_1_hand)
     tie_combo_min_score = (
         math.floor(player_1_score / COMBO_POINT_INTERVAL) * COMBO_POINT_INTERVAL
     )
 
     if tie_combo_min_score != MinComboScore.Two_pairs:
+        # for every combination expect for Two pairs, the tie breaker is the highest card value
         if player_1_hand.get_values() > player_2_hand.get_values():
             game_score.give_player_1_pt()
             return
@@ -96,6 +102,7 @@ def tie_breaker(player_1_hand: object, player_2_hand: object, game_score):
             return
 
     if tie_combo_min_score == MinComboScore.Two_pairs:
+        # If the highest combination is two pairs and the highest pair value is a tie, we next need check the value of the lowest value pairs. If that is also a tie, then we check highest card value of the spare card
         max_pair_value = player_1_score - MinComboScore.Two_pairs
 
         player_1_hand.delete_card(max_pair_value)
@@ -118,14 +125,6 @@ def main():
     for line_num, line in enumerate(sys.stdin):
         line = line.rstrip("\n")
         showdown = line.split(HAND_DELIM)
-
-        # TODO: check that there are the correct number of cards in the showdown
-        # try:
-        #     if len(showdown) % NUM_CARDS_IN_HAND != 0:
-        #         raise IncorrectNumberOfCardsError(len(showdown))
-        # except IncorrectNumberOfCardsError as e:
-        #     print(f"Error: Line {line_num}: {e}")
-        #     pass
 
         player_1 = showdown[0:NUM_CARDS_IN_HAND]
         player_2 = showdown[NUM_CARDS_IN_HAND:]

@@ -5,7 +5,10 @@ from poker_constaints import SUIT_POSITION
 
 
 class MinComboScore(IntEnum):
-    # The min score a hand can recieve for a combination
+    """
+    The min score a hand can receive for a combination
+    """
+
     High_card = 0
     Pair = 20
     Two_pairs = 40
@@ -19,6 +22,10 @@ class MinComboScore(IntEnum):
 
 
 class Suits(IntEnum):
+    """
+    The numerical values for Suits -- makes it easier for comparisons
+    """
+
     C = 1
     H = 2
     D = 3
@@ -26,6 +33,10 @@ class Suits(IntEnum):
 
 
 class CardValue(IntEnum):
+    """
+    The numerical values for numbers
+    """
+
     Two = 2
     Three = 3
     Four = 4
@@ -34,7 +45,6 @@ class CardValue(IntEnum):
     Seven = 7
     Eight = 8
     Nine = 9
-    # Ten = 10   # it seems like we are using T instead of 10
     T = 10
     J = 11
     Q = 12
@@ -44,7 +54,9 @@ class CardValue(IntEnum):
 
 class Card:
     def __init__(self, suit_value: str, face_value: str):
-        # input is like "AH"
+        """
+        The card class stores information about a single card
+        """
         self.suit = self.get_suit(suit_value)
         self.value = self.get_value(face_value)
 
@@ -52,6 +64,9 @@ class Card:
         return f"<Suit:{self.suit}, Value:{self.value}>"
 
     def get_value(self, face_value):
+        """
+        Returns the Enum CardValue from the input string
+        """
         try:
             return CardValue(eval(face_value))
         except Exception:
@@ -60,6 +75,9 @@ class Card:
                     return value
 
     def get_suit(self, suit_value):
+        """
+        Returns the Enum Suit of a card value
+        """
         for suit in Suits:
             if suit.name == suit_value:
                 return suit
@@ -67,6 +85,11 @@ class Card:
 
 class Hand:
     def __init__(self, card_strings: List[str]):
+        """
+        The Hand Class represents the cards that a player has. It is made up of Card objects which represent each individual card.
+
+        Input: card_string: it is a list of card writen as string. i.e. ["3D", "2D", "TQ", "KS", "AC"]. The first position of each string the is card value and the second is the suit.
+        """
         self.cards = []
         for card in card_strings:
             face_value, suit_value = (
@@ -79,6 +102,9 @@ class Hand:
         return f"<The cards are:{self.cards}>"
 
     def get_values(self) -> list:
+        """
+        Output all the card values in a hand in a list from largest to smallest
+        """
         values = [card.value for card in self.cards]
         return sorted(values, reverse=True)
 
