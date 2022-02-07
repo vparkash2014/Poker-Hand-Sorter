@@ -134,7 +134,10 @@ def main():
         player_2_hand = Hand(player_2)
 
         highest_score_for_showdown(player_1_hand, player_2_hand, game_score)
-    print(f"final score: {game_score}")
+    player_1_score_str = f"Player 1: {game_score.player_1}"
+    player_2_score_str = f"Player 2: {game_score.player_2}"
+    sys.stdout.write(player_1_score_str + "\n")
+    sys.stdout.write(player_2_score_str + "\n")
 
 
 if __name__ == "__main__":
