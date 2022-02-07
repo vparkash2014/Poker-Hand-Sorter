@@ -1,5 +1,5 @@
 from poker_structure import Hand
-from poker_constaints import HAND_DELIM
+from poker_constants import HAND_DELIM
 
 hand_pair_1 = "4H 4C 6S 7S KD"
 hand_pair_1 = Hand(hand_pair_1.split(HAND_DELIM))

@@ -1,7 +1,7 @@
 from typing import List
 from enum import IntEnum
 
-from poker_constaints import SUIT_POSITION
+from poker_constants import SUIT_POSITION
 
 
 class MinComboScore(IntEnum):
@@ -9,16 +9,16 @@ class MinComboScore(IntEnum):
     The min score a hand can receive for a combination
     """
 
-    High_card = 0
-    Pair = 20
-    Two_pairs = 40
-    Three_of_a_kind = 60
-    Straight = 80
-    Flush = 100
-    Full_house = 120
-    Four_of_a_kind = 140
-    Straight_flush = 160
-    Royal_Flush = 180
+    HIGH_CARD = 0
+    PAIR = 20
+    TWO_PAIRS = 40
+    THREE_OF_A_KIND = 60
+    STRAIGHT = 80
+    FLUSH = 100
+    FULL_HOUSE = 120
+    FOUR_OF_A_KIND = 140
+    STRAIGHT_FLUSH = 160
+    ROYAL_FLUSH = 180
 
 
 class Suits(IntEnum):
@@ -37,14 +37,14 @@ class CardValue(IntEnum):
     The numerical values for numbers
     """
 
-    Two = 2
-    Three = 3
-    Four = 4
-    Five = 5
-    Six = 6
-    Seven = 7
-    Eight = 8
-    Nine = 9
+    TWO = 2
+    THREE = 3
+    FOUR = 4
+    FIVE = 5
+    SIX = 6
+    SEVEN = 7
+    EIGHT = 8
+    NINE = 9
     T = 10
     J = 11
     Q = 12
@@ -68,11 +68,15 @@ class Card:
         Returns the Enum CardValue from the input string
         """
         try:
-            return CardValue(eval(face_value))
+            return CardValue(int(face_value))
         except Exception:
             for value in CardValue:
                 if value.name == face_value:
                     return value
+            # if the For loop does not find a match, then the user has inputted an unknown card value and we must raise a error
+            raise ValueError(
+                f"You have inputted an invalid card value {face_value}. Please input a proper card value."
+            )
 
     def get_suit(self, suit_value):
         """
@@ -81,6 +85,10 @@ class Card:
         for suit in Suits:
             if suit.name == suit_value:
                 return suit
+        # if the For loop does not find a match, then the user has inputted an unknown card suit and we must raise a error
+        raise ValueError(
+            f"You have inputted an invalid card suit {suit_value}. Please input a proper card suit."
+        )
 
 
 class Hand:
@@ -103,33 +111,48 @@ class Hand:
 
     def get_values(self) -> list:
         """
-        Output all the card values in a hand in a list from largest to smallest
+        Output all the card values in the hand as a list from largest to smallest
         """
         values = [card.value for card in self.cards]
         return sorted(values, reverse=True)
 
     def get_suits(self) -> list:
+        """
+        Output all the suits in the hand as a list
+        """
         suits = [card.suit for card in self.cards]
         return suits
 
     def delete_card(self, card_value):
+        """
+        Deletes/ removes a card from the hand
+        """
         self.cards = [card for card in self.cards if card.value != card_value]
 
 
 class GameScore:
     # TODO: in the future I would like edit this so that more than 2 players can play
     def __init__(self):
-        self.player_1 = 0
-        self.player_2 = 0
+        """
+        The GameScore Class represents a score board. It keeps track the each player's score and give players points when they win. 
+        """
+        # each player will start with 0 points
+        start_score = 0
+        self.player_1 = start_score
+        self.player_2 = start_score
 
     def __repr__(self):
         return f"<Player 1 score:{self.player_1}, Player 2 score:{self.player_2}>"
 
-    def give_player_1_pt(self):
+    def give_player1_a_pt(self):
+        """
+        Gives player 1 a point 
+        """
         self.player_1 += 1
 
-    def give_player_2_pt(self):
+    def give_player2_a_pt(self):
+        """
+        Gives player 2 a point 
+        """
         self.player_2 += 1
 
-
-# hand_1.cards[0].suit
